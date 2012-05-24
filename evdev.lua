@@ -200,7 +200,7 @@ function ev:key_events_string(events)
 end
 
 function ev:keymap() return self.keymap end
-function ev:default_keymap() return self.keymap end
+function ev:default_keymap() return default_keymap end
 function ev:set_keymap(t) self.keymap = t end
 function ev:push(t, v) t[#t+1] = v end
 function ev:is_shift() return self.shift_pressed end
