@@ -45,12 +45,12 @@ ENDIF()
 
 
 EXECUTE_PROCESS(
-	COMMAND lua genheader.lua /usr/include/linux/input.h
-	OUTPUT_FILE evdev-generated.h
+	COMMAND lua ${CMAKE_SOURCE_DIR}/genheader.lua /usr/include/linux/input.h
+	OUTPUT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/evdev-generated.h
 	RESULT_VARIABLE LUA_GENHEADER_RES)
 
 IF(NOT ${LUA_GENHEADER_RES} EQUAL 0)
-	MESSAGE(SEND_ERROR "There was problem generating header file evdev.h from linux/input.h")
+	MESSAGE(SEND_ERROR "There was a problem generating header file evdev-generated.h from linux/input.h")
 ENDIF()
 
 ADD_LIBRARY(evdev MODULE evdev_core.c)
