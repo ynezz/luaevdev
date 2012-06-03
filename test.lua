@@ -27,4 +27,6 @@ function read_test(device, debug)
 	p:close()
 end
 
-read_test({ vendor=0x76d, product=0x1 })  -- Toyota Denso GT-10 (barcode reader)
+read_test({ vendor=0x1447, product=0x8011 }, true) -- COGNEX DataMan 700
+-- read_test({ vendor=0x05e0, product=0x1200 }, true)  -- Symbol LS2208
+-- read_test({ vendor=0x76d, product=0x1 })  -- Toyota Denso GT-10 (barcode reader)

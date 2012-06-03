@@ -115,6 +115,29 @@ function ev:open(f)
 	return false, e
 end
 
+function ev:dump(cb)
+	local r, e = self.handle:read()
+	if not r then
+		self:dbg("dump() read error: %s", e)
+		return false
+	end
+
+	self:dbg("dump() read %d events", #r.events)
+
+	for _, ex in pairs(r.events) do
+		event = evdev_core.event_string(ex.type)
+		self:dbg("dump() time: %d event: %s code: %d (0x%x) value: %d (0x%x)",
+			  ex.time, event, ex.code, ex.code, ex.value, ex.value)
+		if cb then
+			if not cb(ex.time, event, ex.code, ex.value) then
+				return false
+			end
+		end
+	end
+
+	return true
+end
+
 function ev:read_keys_until(key, recursion)
 	if not recursion then self.key_events = {} end
 	if not self.handle then return nil, 'device not open' end
