@@ -138,6 +138,17 @@ function ev:dump(cb)
 	return true
 end
 
+function ev:read(count, timeout)
+	local r, e = self.handle:read(count, timeout)
+	if not r then
+		self:dbg("read() ERROR: %s", e)
+		return nil, e
+	end
+
+	self:dbg("read() read %d events", #r.events)
+	return r
+end
+
 function ev:read_keys_until(key, recursion)
 	if not recursion then self.key_events = {} end
 	if not self.handle then return nil, 'device not open' end
@@ -222,6 +233,8 @@ function ev:key_events_string(events)
 	return ret:len() > 0 and ret or nil
 end
 
+function ev:event_is_key(e) return e.type == evdev_core.EV_KEY end
+function ev:key_string(code) return evdev_core.key_string(code) end
 function ev:keymap() return self.keymap end
 function ev:default_keymap() return default_keymap end
 function ev:set_keymap(t) self.keymap = t end
