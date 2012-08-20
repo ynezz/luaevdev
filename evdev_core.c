@@ -279,6 +279,13 @@ static int evdev_lua_gc(lua_State *L)
 	return 0;
 }
 
+static int evdev_lua_fd(lua_State *L)
+{
+	struct evdev_t *e = luaL_checkudata(L, 1, METANAME);
+	lua_pushinteger(L, e->fd);
+	return 1;
+}
+
 static void push_constants(lua_State *L)
 {
 	struct key_t *k;
@@ -297,6 +304,7 @@ static const luaL_Reg evdev[] = {
 	{ "read", evdev_lua_read },
 	{ "key_string", evdev_lua_strkey },
 	{ "event_string", evdev_lua_strevent },
+	{ "fd", evdev_lua_fd },
 	{ "close", evdev_lua_gc },
 	{ "__gc", evdev_lua_gc },
 	{ NULL, NULL },

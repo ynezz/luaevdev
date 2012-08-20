@@ -233,6 +233,7 @@ function ev:key_events_string(events)
 	return ret:len() > 0 and ret or nil
 end
 
+function ev:fd() return evdev_core.fd() end
 function ev:event_is_key(e) return e.type == evdev_core.EV_KEY end
 function ev:key_string(code) return evdev_core.key_string(code) end
 function ev:keymap() return self.keymap end
