@@ -193,7 +193,7 @@ end
 
 function ev:close()
 	if not self.handle then return end
-	if self.handle then self.handle:close() end
+	self.handle:close()
 end
 
 function ev:key_is_pressed(k) return k.value == 1 and true or false end
@@ -233,7 +233,7 @@ function ev:key_events_string(events)
 	return ret:len() > 0 and ret or nil
 end
 
-function ev:fd() return evdev_core.fd() end
+function ev:fd() return self.handle:fd() end
 function ev:event_is_key(e) return e.type == evdev_core.EV_KEY end
 function ev:key_string(code) return evdev_core.key_string(code) end
 function ev:keymap() return self.keymap end
