@@ -90,12 +90,22 @@ function ev:find_device(f)
 	self:dbg("find_device() OK, got %d device(s)", #t)
 
 	for _, d in pairs(t) do
-		if f.vendor == d.vendor and f.product == d.product then
-			self:dbg("find_device() OK, found device '%s'", d.dev)
-			return self:open(d.dev)
-		else
-			self:dbg("find_device() device didn't match, name: '%s' vendor: 0x%x (%d) product: 0x%x (%d)",
-				  d.name, d.vendor, d.vendor, d.product, d.product)
+		if f.vendor and f.product then
+			if f.vendor == d.vendor and f.product == d.product then
+				self:dbg("find_device() OK, found device '%s'", d.dev)
+				return self:open(d.dev)
+			else
+				self:dbg("find_device() device didn't match, name: '%s' vendor: 0x%x (%d) product: 0x%x (%d)",
+					  d.name, d.vendor, d.vendor, d.product, d.product)
+			end
+		elseif f.topology then
+			if f.topology == d.topology then
+				self:dbg("find_device() OK, found device '%s' (%s)", d.dev, d.topology)
+				return self:open(d.dev)
+			else
+				self:dbg("find_device() device didn't match, name: '%s' topology: '%s'",
+					  d.name, d.vendor, d.vendor, d.product, d.product)
+			end
 		end
 	end
 
