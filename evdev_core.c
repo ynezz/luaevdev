@@ -224,6 +224,7 @@ static int evdev_lua_list(lua_State *L)
         char name[32];
 	int count = 0;
         struct dirent *dp;
+	char topology[256];
 	unsigned short id[4];
 
         dir = opendir("/dev/input");
@@ -253,6 +254,12 @@ static int evdev_lua_list(lua_State *L)
 
 			lua_pushnumber(L, ++count);
 			lua_newtable(L);
+
+                        if (ioctl(fd, EVIOCGPHYS(sizeof(topology)), topology) < 0) {
+				LUA_TPUSH_STR(L, "topology", "");
+                        } else {
+				LUA_TPUSH_STR(L, "topology", topology);
+			}
 
 			LUA_TPUSH_STR(L, "dev", dev);
 			LUA_TPUSH_STR(L, "name", name);
