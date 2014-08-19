@@ -1,7 +1,7 @@
 /*
  * luaevdev - comfortable access to Linux input subsystem(evdev) from Lua
  *
- * Copyright (C) 2012 Petr Stetiar <ynezz@true.cz>, Gaben spol. s r.o.
+ * Copyright (C) 2014 Petr Stetiar <ynezz@true.cz>, Gaben spol. s r.o.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -74,8 +74,8 @@ static const char* strkey(unsigned int code)
 	struct key_t *k;
 
 	for (k = key_table; k->name != NULL; k++)
-	        if (k->code == code)
-        	    return k->name;
+		if (k->code == code)
+			return k->name;
 
 	return NULL;
 }
@@ -85,8 +85,8 @@ static const char* strevent(unsigned int code)
 	struct event_t *e;
 
 	for (e = event_table; e->name != NULL; e++)
-	        if (e->code == code)
-        	    return e->name;
+		if (e->code == code)
+			return e->name;
 
 	return NULL;
 }
@@ -183,7 +183,7 @@ static int evdev_lua_read(lua_State *L)
 			return 2;
 		}
 	}
-	
+
 	ret = read(e->fd, ev, sizeof(*ev) * count);
 	if (ret < (int) sizeof(*ev)) {
 		lua_pushnil(L);
@@ -217,47 +217,47 @@ static int evdev_lua_read(lua_State *L)
 
 static int evdev_lua_list(lua_State *L)
 {
-        int fd;
-        DIR *dir;
+	int fd;
+	DIR *dir;
 	int _errno;
-        char dev[32];
-        char name[32];
+	char dev[32];
+	char name[32];
 	int count = 0;
-        struct dirent *dp;
+	struct dirent *dp;
 	char topology[256];
 	unsigned short id[4];
 
-        dir = opendir("/dev/input");
+	dir = opendir("/dev/input");
 	_errno = errno;
-        if (!dir) {
+	if (!dir) {
 		_errno = errno;
 		return err(L, "opendir", _errno);
 	}
 
 	lua_newtable(L);
-        while ((dp = readdir(dir)) != NULL) {
-                if (dp->d_name && !strncmp(dp->d_name, "event", 5)) {
-                        snprintf(dev, sizeof(dev), "/dev/input/%s", dp->d_name);
-                        fd = open(dev, O_RDONLY);
-                        if (fd == -1)
-                                continue;
+	while ((dp = readdir(dir)) != NULL) {
+		if (dp->d_name && !strncmp(dp->d_name, "event", 5)) {
+			snprintf(dev, sizeof(dev), "/dev/input/%s", dp->d_name);
+			fd = open(dev, O_RDONLY);
+			if (fd == -1)
+				continue;
 
-                        if (ioctl(fd, EVIOCGNAME(32), name) < 0) {
-                                close(fd);
-                                continue;
-                        }
+			if (ioctl(fd, EVIOCGNAME(32), name) < 0) {
+				close(fd);
+				continue;
+			}
 
-                        if (ioctl(fd, EVIOCGID, id) < 0) {
-                                close(fd);
-                                continue;
-                        }
+			if (ioctl(fd, EVIOCGID, id) < 0) {
+				close(fd);
+				continue;
+			}
 
 			lua_pushnumber(L, ++count);
 			lua_newtable(L);
 
-                        if (ioctl(fd, EVIOCGPHYS(sizeof(topology)), topology) < 0) {
+			if (ioctl(fd, EVIOCGPHYS(sizeof(topology)), topology) < 0) {
 				LUA_TPUSH_STR(L, "topology", "");
-                        } else {
+			} else {
 				LUA_TPUSH_STR(L, "topology", topology);
 			}
 
@@ -267,11 +267,11 @@ static int evdev_lua_list(lua_State *L)
 			LUA_TPUSH_NUM(L, "product", id[ID_PRODUCT]);
 
 			lua_rawset(L, -3);
-                }
-        }
+		}
+	}
 
-        closedir(dir);
-        return 1;
+	closedir(dir);
+	return 1;
 }
 
 static int evdev_lua_gc(lua_State *L)
