@@ -187,7 +187,7 @@ function ev:read_keys_until(key, recursion)
 						return self:key_events_string(self.key_events)
 					end
 				else
-					if evdev_core.key_string(ex.code) == key then
+					if evdev_core.key_string(ex.code):match(key) then
 						self:dbg("read_keys_until() OK, got key")
 						return self:key_events_string(self.key_events)
 					end

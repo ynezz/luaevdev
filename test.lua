@@ -19,7 +19,7 @@ function read_test(device, debug)
 
 	repeat
 		log("Please scan a barcode...")
-		r, e = p:read_keys_until('KEY_ENTER')
+		r, e = p:read_keys_until('ENTER$')
 		log("Read barcode: %s", pretty_white(r or 'nothing'))
 	until e
 
@@ -27,7 +27,7 @@ function read_test(device, debug)
 	p:close()
 end
 
-read_test({ vendor=0x1447, product=0x8011 }, true) -- COGNEX DataMan 700
--- read_test({ topology='usb-0000:00:1a.0-1.6.4/input0' }, true)
+-- read_test({ vendor=0x1447, product=0x8011 }, true) -- COGNEX DataMan 700
+read_test({ topology='usb-0000:00:1a.0-1.6.4/input0' }, true)
 -- read_test({ vendor=0x05e0, product=0x1200 }, true)  -- Symbol LS2208
 -- read_test({ vendor=0x76d, product=0x1 })  -- Toyota Denso GT-10 (barcode reader)
