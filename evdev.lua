@@ -206,6 +206,10 @@ function ev:close()
 	self.handle:close()
 end
 
+function ev:key_is_pressed(k)
+	return self.handle:key_state(k) == 1 and true or false
+end
+
 function ev:event_key_is_pressed(k)
 	return k.value == 1 and true or false
 end

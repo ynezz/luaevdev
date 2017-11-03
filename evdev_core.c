@@ -30,6 +30,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -307,12 +308,16 @@ static void push_constants(lua_State *L)
 
 static int evdev_lua_key_state(lua_State *L)
 {
-	char buf[KEY_MAX/8 + 1] = {0};
-	struct evdev_t *e = luaL_checkudata(L, 1, METANAME);
+	int mask = 0;
+	int key_bit = 0;
+	uint8_t buf[KEY_MAX/8 + 1] = {0};
 	int key = luaL_checkint(L, 2);
+	struct evdev_t *e = luaL_checkudata(L, 1, METANAME);
 
 	ioctl(e->fd, EVIOCGKEY(sizeof(buf)), buf);
-	lua_pushinteger(L, buf[key/8] & (1<<(key % 8)));
+	key_bit = buf[key/8];
+	mask = 1 << (key % 8);
+	lua_pushinteger(L, (key_bit & mask) ? 1 : 0);
 	return 1;
 }
 
