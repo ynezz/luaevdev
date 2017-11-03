@@ -305,11 +305,23 @@ static void push_constants(lua_State *L)
 		LUA_TPUSH_NUM(L, e->name, e->code);
 }
 
+static int evdev_lua_key_state(lua_State *L)
+{
+	char buf[KEY_MAX/8 + 1] = {0};
+	struct evdev_t *e = luaL_checkudata(L, 1, METANAME);
+	int key = luaL_checkint(L, 2);
+
+	ioctl(e->fd, EVIOCGKEY(sizeof(buf)), buf);
+	lua_pushinteger(L, buf[key/8] & (1<<(key % 8)));
+	return 1;
+}
+
 static const luaL_Reg evdev[] = {
 	{ "open", evdev_lua_open },
 	{ "list", evdev_lua_list },
 	{ "read", evdev_lua_read },
 	{ "key_string", evdev_lua_strkey },
+	{ "key_state", evdev_lua_key_state },
 	{ "event_string", evdev_lua_strevent },
 	{ "fd", evdev_lua_fd },
 	{ "close", evdev_lua_gc },
