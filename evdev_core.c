@@ -146,10 +146,10 @@ static int evdev_lua_open(lua_State *L)
 
 static int evdev_lua_read(lua_State *L)
 {
-	int i;
 	int ret;
 	int _errno;
 	fd_set set;
+	unsigned int i;
 	struct timeval tv;
 	struct timeval tv_end;
 	struct timeval tv_start;
