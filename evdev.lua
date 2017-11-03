@@ -176,11 +176,11 @@ function ev:read_keys_until(key, recursion)
 		event = evdev_core.event_string(ex.type)
 		if ex.type == evdev_core.EV_KEY then
 			self:dbg("read_keys_until() time: %d event: %s key: %s state: %s (0x%x)", ex.time, event,
-				  evdev_core.key_string(ex.code), self:key_is_pressed(ex) and 'pressed' or 'released', ex.value)
+				  evdev_core.key_string(ex.code), self:event_key_is_pressed(ex) and 'pressed' or 'released', ex.value)
 
 			self:push_key(ex)
 
-			if not ev:key_is_pressed(ex) then
+			if not ev:event_key_is_pressed(ex) then
 				if isnum then 
 					if ex.code == key then
 						self:dbg("read_keys_until() OK, got key")
@@ -206,7 +206,10 @@ function ev:close()
 	self.handle:close()
 end
 
-function ev:key_is_pressed(k) return k.value == 1 and true or false end
+function ev:event_key_is_pressed(k)
+	return k.value == 1 and true or false
+end
+
 function ev:key_is_shift(k)
 	if k.code == evdev_core.KEY_LEFTSHIFT then return true end
 	return false
@@ -214,13 +217,13 @@ end
 
 function ev:char_from_event(e)
 	if self:key_is_shift(e) then
-		self.shift_pressed = self:key_is_pressed(e)
+		self.shift_pressed = self:event_key_is_pressed(e)
 		return ''
 	end
 
 	local key = self.keymap[e.code]
 	if key then
-		if self:key_is_pressed(e) then
+		if self:event_key_is_pressed(e) then
 			if self:is_shift() then					
 				return key.s or ''
 			else
