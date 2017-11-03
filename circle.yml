@@ -6,6 +6,7 @@ dependencies:
   cache_directories:
     - ~/cmake-3.1.3-Linux-x86_64
   override:
+    - sudo apt-get install lua5.1 lua5.1-dev
     - >
       if [ ! -d ~/cmake-3.1.3-Linux-x86_64 ]; then
         echo "No cache - building CMake"
