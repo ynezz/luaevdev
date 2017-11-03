@@ -15,7 +15,7 @@ IF(NOT LUA_CFLAGS)
 	ENDIF()
 ENDIF()
 
-ADD_DEFINITIONS(-Os -Wall -Werror --std=gnu99 -g3 -I.. ${LUA_CFLAGS})
+ADD_DEFINITIONS(-Os -Wall -Werror -Wextra --std=gnu99 -g3 -I.. ${LUA_CFLAGS})
 
 IF(NOT LUA_CPATH)
 	EXECUTE_PROCESS(
