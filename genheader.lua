@@ -13,7 +13,7 @@ function parse(filename)
 			push(t.events, key, code)
 		end
 
-		key, code = line:match("#define%s*(KEY_[%w_]*)%s*([x%x]*)%s*.*")
+		key, code = line:match("#define%s*([KB][ET][YN]_[%w_]*)%s*([x%x]*)%s*.*")
 		if key and tonumber(code) then
 			push(t.keys, key, code)
 		end
