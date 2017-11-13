@@ -200,7 +200,7 @@ static int evdev_lua_read(lua_State *L)
 	lua_newtable(L);
 
 	for (i = 0; i < ret / sizeof(*ev); i++) {
-		int msecs = (ev[i].time.tv_sec * 1000) + (ev[i].time.tv_usec / 1000);
+		uint64_t msecs = ((uint64_t) ev[i].time.tv_sec * 1000UL) + (ev[i].time.tv_usec / 1000);
 		lua_pushnumber(L, i+1);
 		lua_newtable(L);
 
