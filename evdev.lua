@@ -114,6 +114,8 @@ function ev:find_device(f)
 end
 
 function ev:open(f)
+	local e
+
 	if type(f) == "table" then return self:find_device(f) end
 	self:dbg("open() using device: '%s'", f)
 	self.handle, e = evdev_core.open(f)
@@ -135,7 +137,7 @@ function ev:dump(cb)
 	self:dbg("dump() read %d events", #r.events)
 
 	for _, ex in pairs(r.events) do
-		event = evdev_core.event_string(ex.type)
+		local event = evdev_core.event_string(ex.type)
 		self:dbg("dump() time: %d event: %s code: %d (0x%x) value: %d (0x%x)",
 			  ex.time, event, ex.code, ex.code, ex.value, ex.value)
 		if cb then
@@ -173,7 +175,7 @@ function ev:read_keys_until(key, recursion)
 	self:dbg("read_keys_until() read %d events", #r.events)
 
 	for _, ex in pairs(r.events) do
-		event = evdev_core.event_string(ex.type)
+		local event = evdev_core.event_string(ex.type)
 		if ex.type == evdev_core.EV_KEY then
 			self:dbg("read_keys_until() time: %d event: %s key: %s state: %s (0x%x)", ex.time, event,
 				  evdev_core.key_string(ex.code), self:event_key_is_pressed(ex) and 'pressed' or 'released', ex.value)
