@@ -174,11 +174,13 @@ static int evdev_lua_read(lua_State *L)
 		set_timeout(&tv, timeout);
 		ret = select(e->fd+1, &set, NULL, NULL, &tv);
 		if (ret < 0) {
+			free(ev);
 			_errno = errno;
 			return err(L, "select", _errno);
 		}
 
 		if (!FD_ISSET(e->fd, &set)) {
+			free(ev);
 			lua_pushnil(L);
 			lua_pushstring(L, "timeout");
 			return 2;
@@ -187,6 +189,7 @@ static int evdev_lua_read(lua_State *L)
 
 	ret = read(e->fd, ev, sizeof(*ev) * count);
 	if (ret < (int) sizeof(*ev)) {
+		free(ev);
 		lua_pushnil(L);
 		lua_pushstring(L, "short read error");
 		return 2;
@@ -213,6 +216,7 @@ static int evdev_lua_read(lua_State *L)
 	}
 	lua_rawset(L, -3);
 
+	free(ev);
 	return 1;
 }
 
