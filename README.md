@@ -59,7 +59,7 @@ read_test({ vendor=0x76d, product=0x1 })  -- Toyota Denso GT-10 (barcode reader)
 
 ## License
 
-Copyright &copy; 2012 Petr Štetiar, Gaben spol. s r.o.
+Copyright &copy; 2019 Petr Štetiar, Gaben spol. s r.o.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

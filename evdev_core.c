@@ -1,7 +1,7 @@
 /*
  * luaevdev - comfortable access to Linux input subsystem(evdev) from Lua
  *
- * Copyright (C) 2014 Petr Stetiar <ynezz@true.cz>, Gaben spol. s r.o.
+ * Copyright (C) 2019 Petr Stetiar <ynezz@true.cz>, Gaben spol. s r.o.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -42,7 +42,7 @@
 
 #define MODNAME		"evdev_core"
 #define METANAME	MODNAME ".meta"
-#define MODVERSION	"0.0.1"
+#define MODVERSION	"0.0.2"
 
 #define LUA_TPUSH_STR(L, s, v) do { \
 	lua_pushstring(L, s); \
@@ -225,7 +225,7 @@ static int evdev_lua_list(lua_State *L)
 	int fd;
 	DIR *dir;
 	int _errno;
-	char dev[32];
+	char dev[PATH_MAX];
 	char name[32];
 	int count = 0;
 	struct dirent *dp;
